@@ -21,16 +21,19 @@ const api = axios.create({
   headers: { "Content-Type": "application/json" },
 });
 
-let useMock = true;
+let useMock = false;
 
 export async function getInverters(): Promise<Inverter[]> {
   if (useMock) return mockInverters;
   try {
     const { data } = await api.get("/inverters");
+    console.log("[API] /inverters returned", data.length, "inverters");
     return data;
   } catch {
-    useMock = true;
-    return mockInverters;
+    // FIX: Do NOT fall back to mock data — return empty array.
+    // The WebSocket will populate real inverters within seconds.
+    console.warn("[API] /inverters failed — starting with empty state, WebSocket will populate");
+    return [];
   }
 }
 
@@ -47,7 +50,7 @@ export async function getInverterReport(id: string): Promise<DiagnosticReport> {
 export async function getTelemetry(id: string): Promise<TelemetryPoint[]> {
   if (useMock) return generateTelemetry(id);
   try {
-    const { data } = await api.get(`/inverters/${id}/telemetry`);
+    const { data } = await api.get(`/inverters/${id}/trends`);
     return data;
   } catch {
     return generateTelemetry(id);
