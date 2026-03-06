@@ -1,8 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+/* ================= BASE VARIABLES ================= */
 
 @layer base {
   :root {
@@ -67,6 +69,8 @@
   }
 }
 
+/* ================= GLOBAL BASE STYLES ================= */
+
 @layer base {
   * {
     @apply border-border;
@@ -77,10 +81,13 @@
     font-family: 'Inter', sans-serif;
   }
 
-  code, .font-mono {
+  code,
+  .font-mono {
     font-family: 'JetBrains Mono', monospace;
   }
 }
+
+/* ================= COMPONENT UTILITIES ================= */
 
 @layer components {
   .glass-card {
@@ -92,31 +99,37 @@
   }
 
   .neon-glow {
-    box-shadow: 0 0 15px hsl(var(--primary) / 0.3), 0 0 45px hsl(var(--primary) / 0.1);
+    box-shadow: 0 0 15px hsl(var(--primary) / 0.3),
+      0 0 45px hsl(var(--primary) / 0.1);
   }
 
   .neon-glow-blue {
-    box-shadow: 0 0 15px hsl(var(--secondary) / 0.3), 0 0 45px hsl(var(--secondary) / 0.1);
+    box-shadow: 0 0 15px hsl(var(--secondary) / 0.3),
+      0 0 45px hsl(var(--secondary) / 0.1);
   }
 
   .neon-glow-red {
-    box-shadow: 0 0 15px hsl(var(--destructive) / 0.4), 0 0 45px hsl(var(--destructive) / 0.15);
+    box-shadow: 0 0 15px hsl(var(--destructive) / 0.4),
+      0 0 45px hsl(var(--destructive) / 0.15);
   }
 
   .neon-glow-orange {
-    box-shadow: 0 0 15px hsl(var(--warning) / 0.3), 0 0 45px hsl(var(--warning) / 0.1);
+    box-shadow: 0 0 15px hsl(var(--warning) / 0.3),
+      0 0 45px hsl(var(--warning) / 0.1);
   }
 
   .neon-text {
-    text-shadow: 0 0 10px hsl(var(--primary) / 0.5), 0 0 40px hsl(var(--primary) / 0.2);
+    text-shadow: 0 0 10px hsl(var(--primary) / 0.5),
+      0 0 40px hsl(var(--primary) / 0.2);
   }
 
   .neon-text-blue {
-    text-shadow: 0 0 10px hsl(var(--secondary) / 0.5), 0 0 40px hsl(var(--secondary) / 0.2);
+    text-shadow: 0 0 10px hsl(var(--secondary) / 0.5),
+      0 0 40px hsl(var(--secondary) / 0.2);
   }
 
   .grid-pattern {
-    background-image: 
+    background-image:
       linear-gradient(hsl(var(--border) / 0.15) 1px, transparent 1px),
       linear-gradient(90deg, hsl(var(--border) / 0.15) 1px, transparent 1px);
     background-size: 40px 40px;
@@ -125,9 +138,11 @@
   .scrollbar-thin::-webkit-scrollbar {
     width: 6px;
   }
+
   .scrollbar-thin::-webkit-scrollbar-track {
     background: transparent;
   }
+
   .scrollbar-thin::-webkit-scrollbar-thumb {
     @apply bg-muted rounded-full;
   }
