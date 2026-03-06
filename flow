@@ -1,0 +1,7 @@
+# ── ONE TIME ONLY (already done) ──────────────────────
+python data_explorer.py
+
+# ── MAIN PIPELINE (run these 3 in order) ──────────────
+python final_patch.py        # Plants 2 & 3 → inverter_features_READY.csv
+python plant1_anomaly.py     # Plant 1      → plant1_anomaly_scores.csv
+python master_combiner.py    # All plants   → unified_all_plants.csv
