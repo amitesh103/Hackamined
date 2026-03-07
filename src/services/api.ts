@@ -77,7 +77,7 @@ export async function getDeltaSHAP(id: string): Promise<DeltaSHAPValue[]> {
   }
 }
 
-export async function queryAI(question: string): Promise<string> {
+export async function queryAI(question: string, sessionId: string = "default"): Promise<string> {
   if (useMock) {
     await new Promise(r => setTimeout(r, 800 + Math.random() * 1200));
     const q = question.toLowerCase();
@@ -87,7 +87,7 @@ export async function queryAI(question: string): Promise<string> {
     return mockChatResponses.default;
   }
   try {
-    const { data } = await api.post("/query", { question });
+    const { data } = await api.post("/query", { question, session_id: sessionId });
     return data.response || data.answer || JSON.stringify(data);
   } catch {
     return mockChatResponses.default;
@@ -101,4 +101,43 @@ export async function predictInverter(id: string): Promise<{ risk_score: number;
   }
   const { data } = await api.post("/predict", { inverter_id: id });
   return data;
+}
+
+export interface Alert {
+  id: string;
+  inverter_id: string;
+  plant_id: string;
+  risk_score: number;
+  level: "warning" | "critical";
+  message: string;
+  timestamp: string;
+}
+
+export interface Ticket {
+  id: string;
+  inverter_id: string;
+  plant_id: string;
+  risk_score: number;
+  suspected_issue: string;
+  recommended_action: string;
+  status: string;
+  created_at: string;
+}
+
+export async function getAlerts(): Promise<Alert[]> {
+  try {
+    const { data } = await api.get("/alerts");
+    return data;
+  } catch {
+    return [];
+  }
+}
+
+export async function getTickets(): Promise<Ticket[]> {
+  try {
+    const { data } = await api.get("/tickets");
+    return data;
+  } catch {
+    return [];
+  }
 }

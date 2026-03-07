@@ -3,21 +3,22 @@ import { KPICards } from "@/components/dashboard/KPICards";
 import { RiskHeatmap } from "@/components/dashboard/RiskHeatmap";
 import { TrendCharts } from "@/components/dashboard/TrendCharts";
 import { DiagnosisCard } from "@/components/dashboard/DiagnosisCard";
+import { AlertPanel } from "@/components/dashboard/AlertPanel";
+import { TicketPanel } from "@/components/dashboard/TicketPanel";
 import { getInverters } from "@/services/api";
 import { wsService } from "@/services/websocket";
 import type { Inverter } from "@/data/mockData";
 import { AppLayout } from "@/components/layout/AppLayout";
 
-export default function Dashboard() {
-  const [inverters, setInverters] = useState<Inverter[]>([]);
-  const [selectedInverter, setSelectedInverter] = useState("INV-14");
+import { useInverters } from "@/hooks/useInverters";
 
-  useEffect(() => {
-    getInverters().then(setInverters);
-    wsService.connect();
-    const unsub = wsService.subscribe(setInverters);
-    return () => { unsub(); wsService.disconnect(); };
-  }, []);
+export default function Dashboard() {
+  const { inverters, isLoading, error } = useInverters();
+  const [selectedInverter, setSelectedInverter] = useState("INV_001");
+
+  if (isLoading) return <div className="flex h-screen items-center justify-center font-mono text-primary">Loading monitoring data...</div>;
+  if (error) return <div className="flex h-screen items-center justify-center text-destructive">{error}</div>;
+
 
   return (
     <AppLayout>
@@ -40,12 +41,24 @@ export default function Dashboard() {
 
         <KPICards inverters={inverters} />
 
-        <div className="grid lg:grid-cols-2 gap-6">
-          <RiskHeatmap inverters={inverters} />
-          <TrendCharts inverterId={selectedInverter} />
+        <div className="grid lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2">
+            <RiskHeatmap inverters={inverters} />
+          </div>
+          <div className="h-[400px]">
+            <AlertPanel />
+          </div>
         </div>
 
-        <DiagnosisCard inverterId={selectedInverter} />
+        <div className="grid lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2 space-y-6">
+            <TrendCharts inverterId={selectedInverter} />
+            <DiagnosisCard inverterId={selectedInverter} />
+          </div>
+          <div className="h-[650px]">
+            <TicketPanel />
+          </div>
+        </div>
       </div>
     </AppLayout>
   );

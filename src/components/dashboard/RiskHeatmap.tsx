@@ -19,7 +19,7 @@ export function RiskHeatmap({ inverters }: RiskHeatmapProps) {
   return (
     <div className="glass-card p-5">
       <h3 className="text-sm font-semibold text-foreground mb-4 uppercase tracking-wider">Risk Heatmap</h3>
-      <div className="grid grid-cols-4 sm:grid-cols-5 gap-2">
+      <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3">
         {inverters.map((inv, i) => {
           const colors = getRiskColor(inv.risk_score);
           return (

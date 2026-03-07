@@ -27,6 +27,7 @@ export function ChatWindow() {
       timestamp: new Date(),
     },
   ]);
+  const [sessionId] = useState(() => `sess_${Math.random().toString(36).substring(2, 9)}`);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -50,7 +51,7 @@ export function ChatWindow() {
     setIsLoading(true);
 
     try {
-      const response = await queryAI(question);
+      const response = await queryAI(question, sessionId);
       setMessages(prev => [
         ...prev,
         { id: (Date.now() + 1).toString(), role: "assistant", content: response, timestamp: new Date() },
@@ -76,16 +77,14 @@ export function ChatWindow() {
               animate={{ opacity: 1, y: 0 }}
               className={`flex gap-3 ${msg.role === "user" ? "flex-row-reverse" : ""}`}
             >
-              <div className={`shrink-0 h-8 w-8 rounded-lg flex items-center justify-center ${
-                msg.role === "assistant" ? "bg-primary/20 text-primary" : "bg-secondary/20 text-secondary"
-              }`}>
+              <div className={`shrink-0 h-8 w-8 rounded-lg flex items-center justify-center ${msg.role === "assistant" ? "bg-primary/20 text-primary" : "bg-secondary/20 text-secondary"
+                }`}>
                 {msg.role === "assistant" ? <Bot className="h-4 w-4" /> : <User className="h-4 w-4" />}
               </div>
-              <div className={`max-w-[80%] rounded-xl p-4 text-sm ${
-                msg.role === "user"
+              <div className={`max-w-[80%] rounded-xl p-4 text-sm ${msg.role === "user"
                   ? "bg-secondary/10 border border-secondary/20"
                   : "glass-card"
-              }`}>
+                }`}>
                 <div className="prose prose-sm prose-invert max-w-none [&_table]:text-xs [&_th]:p-2 [&_td]:p-2 [&_code]:text-primary [&_code]:bg-primary/10 [&_code]:px-1 [&_code]:rounded">
                   <ReactMarkdown>{msg.content}</ReactMarkdown>
                 </div>
